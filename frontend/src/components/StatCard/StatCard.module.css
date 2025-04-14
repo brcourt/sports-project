@@ -1,0 +1,26 @@
+.root {
+  padding-top: 40px;
+  padding-bottom: 60px;
+  height: 100%;
+
+}
+
+.error {
+    padding-top: 40px;
+    padding-bottom: 60px;
+    background-color: var(--mantine-color-red-9);
+    height: 100%;
+
+  }
+  
+.title {
+  color: var(--mantine-color-white);
+}
+
+.description {
+  max-width: 540px;
+  margin: auto;
+  margin-top: var(--mantine-spacing-xl);
+  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+  color: var(--mantine-color-white);
+}
