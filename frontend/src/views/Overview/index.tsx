@@ -1,4 +1,12 @@
-import { Button, Container, Group, Text } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  Group,
+  Text,
+  Title,
+} from "@mantine/core";
 import classes from "./HeroTitle.module.css";
 import { IconBrandGithubFilled } from "@tabler/icons-react";
 import { queryTeams } from "../../queries/teams/listTeams";
@@ -6,9 +14,12 @@ import { queryGames } from "../../queries/games/listGames";
 import { queryPlayers } from "../../queries/players/listPlayers";
 import { useNavigate } from "react-router-dom";
 import { FeaturesGrid } from "./Features";
+import { useDisclosure } from "@mantine/hooks";
+import { Dots } from "./Dots";
 
 function Overview() {
   const navigate = useNavigate();
+  const [opened, { toggle, close }] = useDisclosure(true);
   // Prefetch data for teams, players, and games
   queryTeams();
   queryPlayers();
@@ -16,6 +27,12 @@ function Overview() {
 
   return (
     <div className={classes.wrapper}>
+      <Box w="100%">
+        <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
+        <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
+        <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
+        <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
+      </Box>
       <Container size={700} className={classes.inner}>
         <h1 className={classes.title}>
           A{" "}
@@ -68,6 +85,23 @@ function Overview() {
             GitHub
           </Button>
         </Group>
+        <Dialog
+          opened={opened}
+          withCloseButton
+          onClose={close}
+          size="md"
+          radius="md"
+          mb="3rem"
+        >
+          <Title order={4} mb="sm">
+            Look down here!
+          </Title>
+          <Text size="sm" mb="xs" fw={500}>
+            Click the Palm Tree button to see the Tanstack Query Devtools. Using
+            it, you can see what happens if queries return an error, or when
+            they are loading.
+          </Text>
+        </Dialog>
       </Container>
       <FeaturesGrid />
     </div>

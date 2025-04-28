@@ -1,4 +1,4 @@
-import "@mantine/core/styles.css";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { MantineProvider } from "@mantine/core";
 import { theme } from "./themes";
 import { Layout } from "./components/Layout/Layout";
@@ -15,6 +15,7 @@ import SingleGameRoute from "./routes/Games/singeGameRoute";
 import SinglePlayerRoute from "./routes/Players/singePlayerRoute";
 import SingleTeamRoute from "./routes/Teams/singeTeamRoute";
 
+import "@mantine/core/styles.css";
 import "./themes/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/dates/styles.css";
@@ -28,11 +29,31 @@ const queryClient = new QueryClient({
   },
 });
 
+const ReactQueryDevtoolsProduction = lazy(() =>
+  import("@tanstack/react-query-devtools/build/modern/production.js").then(
+    (d) => ({
+      default: d.ReactQueryDevtools,
+    })
+  )
+);
+
 export default function App() {
+  const [showDevtools, setShowDevtools] = useState(true);
+
+  useEffect(() => {
+    // @ts-expect-error
+    window.toggleDevtools = () => setShowDevtools((old) => !old);
+  }, []);
+
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen />
+        {showDevtools && (
+          <Suspense fallback={null}>
+            <ReactQueryDevtoolsProduction />
+          </Suspense>
+        )}
         <BrowserRouter>
           <Authenticator signUpAttributes={["family_name"]}>
             <Routes>
